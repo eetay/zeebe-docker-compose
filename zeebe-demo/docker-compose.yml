@@ -17,6 +17,8 @@ services:
     volumes:
       - ./zeebe-hazelcast-exporter-0.7.0-jar-with-dependencies.jar:/usr/local/zeebe/lib/zeebe-hazelcast-exporter.jar
       - ./zeebe.cfg.toml:/usr/local/zeebe/conf/zeebe.cfg.toml
+    depends_on:
+      - elasticsearch
     networks:
       - zeebe_network
   monitor:
@@ -55,13 +57,11 @@ services:
       - zeebe_network
   zeebe-worker:
     container_name: zeebe-worker
-    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:7-master-261ce5b
+    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:14-master-7a09c5a
     environment:
       - ZEEBE_BROKER=zeebe:26500
       - ACTIVEMQ_HOST=activemq
       - SFTP_HOST=sftp:22
-    ports:
-      - "3000:3000"
     depends_on:
       - zeebe
       - sftp
@@ -83,7 +83,6 @@ services:
 #      - /var/log/activemq:/var/log/activemq
     networks:
       - zeebe_network
-  kibana:
   elasticsearch:
     container_name: elastic-for-zeebe
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.9
