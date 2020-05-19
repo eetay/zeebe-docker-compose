@@ -1,0 +1,106 @@
+version: "2"
+
+networks:
+  zeebe_network:
+    driver: bridge
+
+services:
+  zeebe:
+    container_name: zeebe_broker
+    image: camunda/zeebe:0.22.1
+    environment:
+      - ZEEBE_LOG_LEVEL=debug
+    ports:
+      - "26500:26500"
+      - "9600:9600"
+      - "5701:5701"
+    volumes:
+      - ../lib/zeebe-hazelcast-exporter-0.7.0-jar-with-dependencies.jar:/usr/local/zeebe/lib/zeebe-hazelcast-exporter.jar
+      - ./zeebe.cfg.toml:/usr/local/zeebe/conf/zeebe.cfg.toml
+    networks:
+      - zeebe_network
+  monitor:
+    container_name: zeebe_monitor
+    image: camunda/zeebe-simple-monitor:0.17.0
+    environment:
+      - io.zeebe.monitor.connectionString=zeebe:26500
+      - io.zeebe.monitor.hazelcast.connection=zeebe:5701
+    ports:
+      - "8082:8080"
+    depends_on:
+      - zeebe
+    networks:
+      - zeebe_network
+  humantask:
+    container_name: zeebe-simple-tasklist
+    image: camunda/zeebe-simple-tasklist:latest
+    environment:
+      - zeebe.client.broker.contactPoint=zeebe:26500
+      - zeebe.worker.hazelcast.connection=zeebe:5701
+    ports:
+      - "8083:8081"
+    depends_on:
+      - zeebe
+    networks:
+      - zeebe_network
+  sftp:
+    container_name: sftp-for-zeebe-demo
+    image: atmoz/sftp
+    volumes:
+      - /tmp/zeebe-sftp-upload:/home/ftpuser/upload
+    ports:
+      - "2222:22"
+    command: ftpuser:ftppass:1001
+    networks:
+      - zeebe_network
+  zeebe-worker:
+    container_name: zeebe-worker
+    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:7-master-261ce5b
+    environment:
+      - ZEEBE_BROKER=zeebe:26500
+      - ACTIVEMQ_HOST=activemq
+      - SFTP_HOST=sftp:22
+    ports:
+      - "3000:3000"
+    depends_on:
+      - zeebe
+      - sftp
+      - activemq
+    networks:
+      - zeebe_network
+  activemq:
+    container_name: activemq-for-zeebe-demo
+    image: webcenter/activemq:latest
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+      - "61613:61613"
+    environment:
+      - ACTIVEMQ_ADMIN_LOGIN=admin
+      - ACTIVEMQ_ADMIN_PASSWORD=password
+#    volumes:
+#      - /data/activemq:/data
+#      - /var/log/activemq:/var/log/activemq
+    networks:
+      - zeebe_network
+  kibana:
+  elasticsearch:
+    container_name: elastic-for-zeebe
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.9
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - cluster.name=test
+    networks:
+      - zeebe_network
+  kibana:
+    container_name: kibana-for-zeebe
+    image: docker.elastic.co/kibana/kibana-oss:6.8.9
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - zeebe_network
