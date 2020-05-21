@@ -49,7 +49,7 @@ services:
     container_name: sftp-for-zeebe-demo
     image: atmoz/sftp
     volumes:
-      - /tmp/zeebe-sftp-upload:/home/ftpuser/upload
+      - /var/zeebe-demo/sftp-upload:/home/ftpuser/upload
     ports:
       - "2222:22"
     command: ftpuser:ftppass:1001
@@ -57,7 +57,9 @@ services:
       - zeebe_network
   zeebe-worker:
     container_name: zeebe-worker
-    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:22-master-b982791
+    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:35-master-ef5126e
+    volumes:
+      - /var/zeebe-demo/config:/usr/src/app/config
     environment:
       - ZEEBE_BROKER=zeebe:26500
       - ACTIVEMQ_HOST=activemq
