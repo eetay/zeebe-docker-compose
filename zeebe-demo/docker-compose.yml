@@ -57,7 +57,8 @@ services:
       - zeebe_network
   zeebe-worker:
     container_name: zeebe-worker
-    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:54-master-37b0f9c
+    #image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:54-master-37b0f9c
+    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:64-master-df931c9
     volumes:
       - /var/zeebe-demo/config:/usr/src/app/config
     environment:
