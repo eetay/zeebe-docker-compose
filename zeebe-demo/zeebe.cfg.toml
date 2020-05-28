@@ -282,7 +282,7 @@ id = "elasticsearch"
 className = "io.zeebe.exporter.ElasticsearchExporter"
 
   [exporters.args]
-  url = "http://elasticsearch:9200"
+  url = "https://graylog-es.psamvp.hcs.harman.com"
 
   [exporters.args.bulk]
   delay = 5
