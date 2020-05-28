@@ -91,7 +91,7 @@ zeebe:
         className: io.zeebe.exporter.ElasticsearchExporter
 
         args:
-          url: http://graylog-es.psamvp.hcs.harman.com:9200
+          url: http://elasticsearch:9200
 
           bulk:
             delay: 5
@@ -102,7 +102,7 @@ zeebe:
           #   password: changeme
 
           index:
-            prefix: zeebe-record
+            prefix: zeebe23-record
             createTemplate: true
 
             command: false

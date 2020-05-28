@@ -6,10 +6,10 @@ networks:
 
 services:
   zeebe:
-    container_name: zeebe_broker
+    container_name: zeebe
     image: camunda/zeebe:0.23.1
     environment:
-      - ZEEBE_LOG_LEVEL=info
+      - ZEEBE_LOG_LEVEL=debug
     ports:
       - "26500:26500"
       - "9600:9600"
@@ -71,6 +71,15 @@ services:
       - activemq
     networks:
       - zeebe_network
+  operate:
+    container_name: operate
+    image: camunda/operate:0.23.0
+    ports:
+      - "8083:8080"
+    volumes:
+      - ./operate.yml:/usr/local/operate/config/application.yml
+    networks:
+      - zeebe_network
   activemq:
     container_name: activemq-for-zeebe-demo
     image: webcenter/activemq:latest
@@ -87,36 +96,23 @@ services:
     networks:
       - zeebe_network
   elasticsearch:
-    container_name: elastic-for-zeebe
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.9
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.7.1
     ports:
       - "9200:9200"
-      - "9300:9300"
     environment:
       - discovery.type=single-node
-      - cluster.name=test
-    networks:
-      - zeebe_network
-  operate:
-    container_name: operate
-    image: camunda/operate:0.23.0
-    ports:
-      - "8083:8080"
-    volumes:
-      - ./operate.yml:/usr/local/operate/config/application.yml
+      - cluster.name=elasticsearch
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    volumes:
+#      - zeebe_elasticsearch_data:/usr/share/elasticsearch/data
     networks:
       - zeebe_network
   kibana:
-    container_name: kibana-for-zeebe
-    image: docker.elastic.co/kibana/kibana-oss:6.8.9
-    environment:
-      - ELASTICSEARCH_HOSTS=http://graylog-es.psamvp.hcs.harman.com
-      #- ELASTICSEARCH_SSL_VERIFICATIONMODE=none
-      #- ELASTICSEARCH_SSL_VERIFY=false
-      #- LOGGING_VERBOSE=true
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana-oss:6.7.1
     ports:
       - "5601:5601"
-    depends_on:
-      - elasticsearch
     networks:
       - zeebe_network
+

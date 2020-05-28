@@ -6,7 +6,7 @@ camunda.operate:
     # Cluster name
     clusterName: elasticsearch
     # Host
-    host: graylog-es.psamvp.hcs.harman.com
+    host: elasticsearch
     # Transport port
     port: 9200
   # Zeebe instance
@@ -18,11 +18,11 @@ camunda.operate:
     # Cluster name
     clusterName: elasticsearch
     # Host
-    host: graylog-es.psamvp.hcs.harman.com
+    host: elasticsearch
     # Transport port
     port: 9200
     # Index prefix, configured in Zeebe Elasticsearch exporter
-    prefix: zeebe-record
+    prefix: zeebe23-record
 logging:
   level:
     ROOT: INFO
