@@ -92,6 +92,7 @@ zeebe:
 
         args:
           url: http://elasticsearch:9200
+          #url: http://graylog-es.psamvp.hcs.harman.com:9200
 
           bulk:
             delay: 5
@@ -126,3 +127,6 @@ zeebe:
       hazelcast:
         className: io.zeebe.hazelcast.exporter.HazelcastExporter
         jarPath: exporters/zeebe-hazelcast-exporter.jar
+        args:
+          capacity: 100000 
+          format: "protobuf"
