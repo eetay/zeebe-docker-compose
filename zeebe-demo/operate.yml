@@ -4,11 +4,11 @@ camunda.operate:
   # ELS instance to store Operate data
   elasticsearch:
     # Cluster name
-    clusterName: elasticsearch
-    #clusterName: graylog-elasticsearch
+    #clusterName: elasticsearch
+    clusterName: graylog-elasticsearch
     # Host
-    host: elasticsearch
-    #host: graylog-es.psamvp.hcs.harman.com
+    #host: elasticsearch
+    host: graylog-es.psamvp.hcs.harman.com
     # Transport port
     port: 9200
   # Zeebe instance
@@ -21,12 +21,12 @@ camunda.operate:
     clusterName: elasticsearch
     #clusterName: graylog-elasticsearch
     # Host
-    host: elasticsearch
-    #host: graylog-es.psamvp.hcs.harman.com
+    #host: elasticsearch
+    host: graylog-es.psamvp.hcs.harman.com
     # Transport port
     port: 9200
     # Index prefix, configured in Zeebe Elasticsearch exporter
-    prefix: zeebe23-record
+    prefix: zeebe231-record
 logging:
   level:
     ROOT: INFO
