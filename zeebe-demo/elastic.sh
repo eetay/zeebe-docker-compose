@@ -11,7 +11,7 @@ function mapping {
 	$CURL "$SERVER/$1/_mapping" | jq . 
 }
 function query {
-	$CURL "$SERVER/$1/_search" | jq . 
+	$CURL -X POST "$SERVER/$1/_search" -H 'Content-Type: application/json' -d '{"query":{"query_string":{ "query": "'${2:-*}'"}}}' | jq . 
 }
 
 function delete {
