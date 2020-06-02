@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/bash -xe
 SERVER=http://graylog-es.psamvp.hcs.harman.com:9200
 LIST=$SERVER/_cat/indices?format=json
 CURL="curl -k -s"
+XARGS="xargs -t"
 
 function patchMapping {
 	set -x
@@ -23,7 +24,7 @@ function mapping {
 }
 
 function query {
-	$CURL -X POST "$SERVER/$1/_search" -H 'Content-Type: application/json' -d '{"query":{"query_string":{ "query": "'${2:-*}'"}}}' | jq . 
+	$XARGS -I INDEX $CURL -X POST "$SERVER/INDEX/_search" -H 'Content-Type: application/json' -d '{"query":{"query_string":{ "query": "'${1:-*}'"}}}' | jq . 
 }
 
 function delete {
