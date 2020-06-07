@@ -51,6 +51,10 @@ services:
       - zeebe.worker.hazelcast.connection=zeebe:5701
     ports:
       - "8081:8081"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "tcp://graylog.psamvp.hcs.harman.com:12201"
     depends_on:
       - zeebe
     networks:
@@ -67,7 +71,7 @@ services:
       - zeebe_network
   zeebe-worker:
     container_name: zeebe-worker
-    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:118-master-c4d5d0f
+    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:121-master-6dcced1
     volumes:
       - /var/zeebe-demo/config:/usr/src/app/config
     environment:
@@ -77,6 +81,10 @@ services:
     depends_on:
       - zeebe
       - sftp
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "tcp://graylog.psamvp.hcs.harman.com:12201"
     networks:
       - zeebe_network
   operate:
