@@ -21,6 +21,10 @@ services:
     volumes:
       - ../lib/zeebe-hazelcast-exporter.jar:/usr/local/zeebe/exporters/zeebe-hazelcast-exporter.jar
       - ./application.yaml:/usr/local/zeebe/config/application.yaml
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "tcp://graylog.psamvp.hcs.harman.com:12201"
     networks:
       - zeebe_network
   monitor:
@@ -71,7 +75,7 @@ services:
       - zeebe_network
   zeebe-worker:
     container_name: zeebe-worker
-    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:121-master-6dcced1
+    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/psa-demo-zeebe-worker:124-master-e4b5b8f
     volumes:
       - /var/zeebe-demo/config:/usr/src/app/config
     environment:
