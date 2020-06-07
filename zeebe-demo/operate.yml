@@ -26,7 +26,7 @@ camunda.operate:
     # Transport port
     port: 9200
     # Index prefix, configured in Zeebe Elasticsearch exporter
-    prefix: zeebe23x-record
+    prefix: zeebe232h-record
 logging:
   level:
     ROOT: INFO

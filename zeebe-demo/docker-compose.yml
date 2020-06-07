@@ -11,7 +11,7 @@ volumes:
 services:
   zeebe:
     container_name: zeebe
-    image: camunda/zeebe:0.23.1
+    image: registry.ahanet.net:5000/zeebe:0.23.2
     environment:
       - ZEEBE_LOG_LEVEL=info
     ports:
@@ -106,19 +106,20 @@ services:
 ##      - /var/log/activemq:/var/log/activemq
 #    networks:
 #      - zeebe_network
-#  elasticsearch:
-#    container_name: elasticsearch
-#    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.7.1
-#    ports:
-#      - "9200:9200"
-#    environment:
-#      - discovery.type=single-node
-#      - cluster.name=elasticsearch
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#    volumes:
-#      - zeebe_elasticsearch_data:/usr/share/elasticsearch/data
-#    networks:
-#      - zeebe_network
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.7.1
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - ingress=[{"type":"append"},{"type":"bytes"},{"type":"convert"},{"type":"date"},{"type":"date_index_name"},{"type":"dissect"},{"type":"dot_expander"},{"type":"drop"},{"type":"fail"},{"type":"foreach"},{"type":"geoip"},{"type":"grok"},{"type":"gsub"},{"type":"join"},{"type":"json"},{"type":"kv"},{"type":"lowercase"},{"type":"pipeline"},{"type":"remove"},{"type":"rename"},{"type":"script"},{"type":"set"},{"type":"sort"},{"type":"split"},{"type":"trim"},{"type":"uppercase"},{"type":"urldecode"},{"type":"user_agent"}]
+      - cluster.name=elasticsearch
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - zeebe_elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - zeebe_network
   kibana-gl:
     container_name: kibana-gl
     image: docker.elastic.co/kibana/kibana:6.8.2

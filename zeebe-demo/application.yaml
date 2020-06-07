@@ -103,7 +103,7 @@ zeebe:
           #   password: changeme
 
           index:
-            prefix: zeebe23x-record
+            prefix: zeebe232h-record
             createTemplate: true
 
             command: false
