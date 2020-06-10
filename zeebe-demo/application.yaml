@@ -128,5 +128,5 @@ zeebe:
         className: io.zeebe.hazelcast.exporter.HazelcastExporter
         jarPath: exporters/zeebe-hazelcast-exporter.jar
         args:
-          capacity: 100000 
+          capacity: 300000 
           format: "protobuf"
