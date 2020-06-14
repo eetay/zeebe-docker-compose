@@ -1,5 +1,7 @@
 #!/bin/bash -x 
 docker-compose down
+eq --dry 'indices | grep zeebe | delete-by-query "*"'
+eq 'indices | grep zeebe | delete-by-query "*"'
 docker volume prune -f
 docker-compose up -d
 sleep 40
