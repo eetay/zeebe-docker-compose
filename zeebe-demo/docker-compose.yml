@@ -11,7 +11,9 @@ volumes:
 services:
   zeebe:
     container_name: zeebe
-    image: registry.ahanet.net:5000/zeebe:0.23.2
+    #image: registry.ahanet.net:5000/zeebe:0.23.2
+    #image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/zeebe-broker:0.23.2-eetay-889792165
+    image: 712823164894.dkr.ecr.us-east-2.amazonaws.com/zeebe-broker:19-0.23.2-eetay-7a54056
     environment:
       - ZEEBE_LOG_LEVEL=info
     ports:
@@ -19,7 +21,7 @@ services:
       - "9600:9600"
       - "5701:5701"
     volumes:
-      - ../lib/zeebe-hazelcast-exporter.jar:/usr/local/zeebe/exporters/zeebe-hazelcast-exporter.jar
+      - ./zeebe-hazelcast-exporter-0.9.0-jar-with-dependencies.jar:/usr/local/zeebe/exporters/zeebe-hazelcast-exporter.jar
       - ./application.yaml:/usr/local/zeebe/config/application.yaml
     logging:
       driver: gelf
@@ -29,10 +31,10 @@ services:
       - zeebe_network
   monitor:
     container_name: zeebe_monitor
-    image: camunda/zeebe-simple-monitor:0.18.0
+    image: camunda/zeebe-simple-monitor:0.19.0
     environment:
       - zeebe.client.broker.contactPoint=zeebe:26500
-      - zeebe.worker.hazelcast.connection=zeebe:5701
+      - zeebe.client.worker.hazelcast.connection=zeebe:5701
       - spring.datasource.url=jdbc:postgresql://postgres:5432/postgres
       - spring.datasource.username=postgres
       - spring.datasource.password=demo
